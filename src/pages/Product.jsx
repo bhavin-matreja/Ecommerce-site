@@ -9,7 +9,7 @@ const Product = () => {
   // use same name as mentioned in route
   const {productId} = useParams()
   // get all products and currency from context
-  const {products, currency} = useContext(ShopContext)
+  const {products, currency, addToCart} = useContext(ShopContext)
   // get the selected product data from product list
   const [productData, setProductData] = useState(false)
   // main selected image
@@ -80,7 +80,9 @@ const Product = () => {
               }
             </div>
           </div>
-          <button className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer'>
+          <button
+            onClick={() => addToCart(productData._id, size)} 
+            className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer'>
             ADD TO CART
           </button>
           <hr className='mt-8 sm:w-4/5' />
