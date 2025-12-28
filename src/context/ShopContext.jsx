@@ -13,6 +13,7 @@ const ShopContextProvider = (props) => {
     const [search, setSearch] = useState('')
     const [showSearch, setShowSearch] = useState(true)
     const [cartItems, setCartItems] = useState({})
+    const [orders, setOrders] = useState([]); // New state to hold orders
     const navigate = useNavigate()
 
     const addToCart = async(itemId, size) => {
@@ -80,6 +81,24 @@ const ShopContextProvider = (props) => {
     return totalAmount;
   };
 
+  const addOrder = () => {
+    let tempOrders = structuredClone(orders);
+    let newOrder = [];
+
+    for (const item in cartItems) {
+      for (const size in cartItems[item]) {
+        if (cartItems[item][size] > 0) {
+          newOrder.push({
+            _id: item,
+            size,
+            quantity: cartItems[item][size],
+          });
+        }
+      }
+    }
+    setOrders([...tempOrders, ...newOrder]);
+  };
+
     // // check cartItems in console
     // useEffect(()=> {
     //     console.log(cartItems);
@@ -88,9 +107,10 @@ const ShopContextProvider = (props) => {
     const value = {
         products, currency, delivery_fee,
         search, setSearch, showSearch, setShowSearch,
-        cartItems, addToCart,
+        cartItems, addToCart, setCartItems,
         getCardCount, updateQuantity,
-        getCartAmount, navigate
+        getCartAmount, navigate,
+        orders, addOrder
     }
 
     return (
